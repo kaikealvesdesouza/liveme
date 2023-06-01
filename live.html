@@ -34,12 +34,12 @@
 			</div>
 			<form onsubmit="return false;">
 				<div style="">
-				<input type="text"  class="mform-control" type="text" id="search" name="search">
+				<input type="text"  class="mform-control" type="text" id="search" name="search" required>
 			<button class="btn btn-success" onclick="submf()">pesquisar</button>	
 				</div>				
 			</form>
 		</div>
-		<div id="suggestions"></div>
+		<div id="suggestions"></div><br>
 		<div id="resultado"></div>
 		<div style="position:fixed;bottom:0px;" id="paginacao"></div>
 	</div>
@@ -84,6 +84,7 @@
 	  }
 	  
 	  function submf(v){
+	  	if(document.forms[0].checkValidity() == true){
 	  	search=document.getElementById("search").value;
 	  	page=1;
 	  	var title  = "live me - " + search + " "      + page;
@@ -91,21 +92,52 @@
 			window.history.pushState({}, title, target);
 			wiki(search);
 			list();
+			}
 	  }
 	  
+	  function filterbymatch(items,search){
+	  	let testeds = [];
+	  	for(let i=0;i<items.length;i++)
+	  	{
+	  		let  regex = new RegExp( sites[items[i]].title + "*",'g');
+	  		console.log("searching for ",search, " in ",sites[items[i]].title);
+	  			if ( regex.test(search) == true ) {
+	  				testeds.push(items[i]);
+	  				break;
+	  			}
+	  		for(let j=0;j<sites[items[i]].keywords.length;j++)
+	  		{
+	  			let  keyw  = sites[items[i]].keywords[j].replace("?","");
+	  			let  regex = new RegExp( keyw+ "*",'g');
+	  			if ( regex.test(search) == true ) {
+						console.log("match ",search," ",keyw);
+						testeds.push(items[i]);
+						break;
+					}
+
+	  		}
+	  	}
+	  	return testeds;
+	  }
 	  
 		function list(){ 
 			let html = "";
-			let pkeys=skeys.slice(page-1,(page-1)+sitesppage);
-			for(let i=0;i< pkeys.length;i++)
+			let tests=[];
+			for(let i=0;i<nofpages;i++)
+			{
+				tests=tests.concat(filterbymatch(skeys.slice(i*sitesppage,(i*sitesppage)+sitesppage),search));
+			}
+			
+			let pkeys = tests.slice((page-1)*sitesppage,(page-1)*sitesppage+sitesppage);
+			for(let i=0;i<pkeys.length;i++)
 	  	{
 	  		html += li(sites[pkeys[i]],search);
 	  	}
 	  	document.getElementById("resultado").innerHTML = html;
-	  	document.getElementById("paginacao").innerHTML = pagination();
+	  	document.getElementById("paginacao").innerHTML = pagination(tests.length/sitesppage);
 		}
 		
-		function pagination(){
+		function pagination(nofpages){
 			let html = "<div class='pagination'>";
 			for(let i=1;i<nofpages+1;i++)
 			{
