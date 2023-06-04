@@ -157,42 +157,44 @@
 	  
 	  function filterbymatch(items,search){
 	  	let testeds = [];
+	  	let words = search.split(" ");
 	  	for(let i=0;i<items.length;i++)
 	  	{
 	  		let nofsilabas = Math.ceil(sites[items[i]].title.length/3);
 	  		let palavra    = "";
 	  		let found      = false;
-	  		let begin      =0;
-	  		for(let p=0;p<nofsilabas;p++)
+	  		for(let w=0;w<words.length;w++)
 	  		{
-	  			let limit   = begin + 3;
-	  			let silaba  = sites[items[i]].title.slice(begin,limit);
-	  				 palavra += silaba;
-	  				 begin = limit;
-	  				 console.log("palavra",palavra);
-					let  regex  = new RegExp(palavra,'g');
-					
-						if ( regex.test(search) == true) {
-							console.log("searching for ",palavra, " in ",search);
+					let begin      =0;
+					for(let p=0;p<nofsilabas;p++)
+					{
+						let limit   = begin + 3;
+						let silaba  = sites[items[i]].title.slice(begin,limit);
+							 palavra += silaba;
+							 begin = limit;
+							 //console.log("palavra",palavra);
+						let  regex  = new RegExp(palavra,'g');
+						
+							if ( regex.test(words[w]) == true) {
+								//console.log("searching for ",palavra, " in ",words[w]);
+								testeds.push(items[i]);
+								found = true;
+								break;
+							}
+					}
+					if(found == true){
+						continue;		
+					}
+					for(let j=0;j<sites[items[i]].keywords.length;j++)
+					{
+						let  keyw  = sites[items[i]].keywords[j].replace("?","");
+						//let  regex = new RegExp( keyw+ "*",'g');
+						if ( like(keyw,words[w]) == true /*regex.test(words[w]) == true*/ ) {
 							testeds.push(items[i]);
-							found = true;
 							break;
 						}
-	  		}
-	  		if(found == true){
-	  			continue;		
-	  		}
-	  		for(let j=0;j<sites[items[i]].keywords.length;j++)
-	  		{
-	  			let  keyw  = sites[items[i]].keywords[j].replace("?","");
-	  			let  regex = new RegExp( keyw+ "*",'g');
-	  			if ( regex.test(search) == true ) {
-						console.log("match ",search," ",keyw);
-						testeds.push(items[i]);
-						break;
 					}
-
-	  		}
+				}
 	  	}
 	  	return testeds;
 	  }
@@ -210,7 +212,7 @@
 			let html  = "";
 			let html1 = "";
 			let res   = get(search);
-			let news  = get("noticia");
+			let news  = [];//get("noticia");
 			
 			let all   = res;
 			for(let i=0;i<news.length;i++)
@@ -235,6 +237,7 @@
 	  	
 	  	document.getElementById("resultado").innerHTML = html;
 	  	document.getElementById("paginacao").innerHTML = pagination(all.length/sitesppage);
+			
 		}
 		
 		function pagination(nofpages){
