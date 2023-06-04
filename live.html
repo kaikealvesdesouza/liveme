@@ -39,8 +39,10 @@
 				</div>				
 			</form>
 		</div>
-		<div id="suggestions"></div><br>
+		<div id="suggestions"></div>
+		<hr>
 		<div id="resultado"></div>
+		<hr>
 		<div style="position:fixed;bottom:0px;" id="paginacao"></div>
 	</div>
 	<script type="text/javascript">
@@ -66,19 +68,77 @@
 	 	function openM(event,a){
 	 		 event.preventDefault();
 	 		myWindow = window.open(a.href, "live me", "width=400,height=300");
-	 	}  
+	 	}
+	 	
+	 	function nof(){
+	 		return li({title:"pesquisa",abstract:"Não encontrei nenhum site com essa palavras.", url:"",params:[],keywords:[]},search);
+	 	}
+	 	 
+	 	function like(str,word){
+	 		let nofsilabas = Math.ceil(str.length/3);
+  		let palavra    = "";
+  		let weight     = 0;
+  		let reqrwt     = 1;
+  		let begin      = 0;
+  		for(let p=0;p<nofsilabas;p++)
+  		{
+  			let limit   = begin + 3;
+  			let prev    = limit;
+  			let silaba  = str.slice(begin,limit);
+  			     begin  = limit;
+  				 palavra += silaba;
+  			let parcial = word.substring(0,palavra.length);
+				 if( palavra == parcial ){
+				 	   weight++;
+				 }
+  		}
+  		if(weight == reqrwt || weight > reqrwt){
+  			return true;
+  		}
+	 	}
+	 	function rpl(item,search){
+	 		let payload = search;
+	 		let words   = payload.split(" ");  
+			 for(let i=0;i<words.length;i++)
+			 {
+			 	if( like(words[i], item.title) == true ){
+  		 		payload	= payload.replace(words[i],"");
+  		 	}
+  		 	
+		 		for(let j=0;j<item.keywords.length;j++)
+		 		{	
+		 			if( like(words[i], item.keywords[j]) == true ){
+  		 			payload	= payload.replace(words[i],"");
+  		 		}
+		 		}
+		 	}
+		 		return payload;
+	 	}
 	  function li(item,search){
 	  	let html =  "<div>";
-	  	    html += "<h4>" + item.title + "</h4>";
+	  	    html += "<h4 class='title'>" + item.title + "</h4>";
 	  	    html += "<p class='truncate'>" + item.abstract + "</p>";
 	  	    pstr = "";
+	  	    let pyld = rpl(item,search);
+	  	    let furl = true;
 	  	    for(let i=0;i<item.params.length;i++)
 	  	    {
 	  	    		if(item.params[i].f == "search"){
-	  	    			pstr += item.params[i].name + "=" + search;
+	  	    			pstr += item.params[i].name + "=" + pyld;
+	  	    			furl = false;
+	  	    			continue;
 	  	    		}
+	  	    		pstr += "&" + item.params[i].name + "=" + item.params[i].v;
 	  	    }
-	  	    html += "<a onclick='openM(event,this);return false;' href='https://www."+item.url+"/"+item.search+"/"+search+ "?"+ pstr + "'>" + item.title +"->"+"pesquisar" +"->"+ search+ "</a>"
+	  	    let furls=(furl)?pyld:"";
+	  	   	let psearch=(item.search) ? item.search + "/" : "";
+	  	    if(item.url!=""){
+	  	    	if(item.url.match(/\./g).length>=3){
+	  	    		html += "<a onclick='openM(event,this);return false;' href='https:" + item.url + "/" + psearch + furls + "?" + pstr + "'>" + item.title + "->" + "pesquisar" + "->" + pyld + "</a>"
+	  	    	}else{
+	  	    		html += "<a onclick='openM(event,this);return false;' href='https://www." + item.url + "/" + psearch + furls + "?" + pstr + "'>" + item.title + "->" + "pesquisar" + "->"+ pyld + "</a>"
+	  				}
+	  			}
 	  			html +="</div>";
 	  	return html;
 	  }
@@ -99,12 +159,27 @@
 	  	let testeds = [];
 	  	for(let i=0;i<items.length;i++)
 	  	{
-	  		let  regex = new RegExp( sites[items[i]].title + "*",'g');
-	  		console.log("searching for ",search, " in ",sites[items[i]].title);
-	  			if ( regex.test(search) == true ) {
-	  				testeds.push(items[i]);
-	  				break;
-	  			}
+	  		let nofsilabas = Math.ceil(sites[items[i]].title.length/3);
+	  		let palavra    = "";
+	  		let found      = false;
+	  		
+	  		for(let p=0;p<nofsilabas;p++)
+	  		{
+	  			let silaba  = sites[items[i]].title.slice(p*nofsilabas,p*nofsilabas + 3);
+	  				 palavra += silaba;
+	  				 console.log("palavra",palavra);
+					let  regex  = new RegExp(palavra,'g');
+					
+						if ( regex.test(search) == true) {
+							console.log("searching for ",palavra, " in ",search);
+							testeds.push(items[i]);
+							found = true;
+							break;
+						}
+	  		}
+	  		if(found == true){
+	  			continue;		
+	  		}
 	  		for(let j=0;j<sites[items[i]].keywords.length;j++)
 	  		{
 	  			let  keyw  = sites[items[i]].keywords[j].replace("?","");
@@ -119,22 +194,45 @@
 	  	}
 	  	return testeds;
 	  }
-	  
-		function list(){ 
-			let html = "";
-			let tests=[];
+	  function get(search){
+	  	let tests = [];
 			for(let i=0;i<nofpages;i++)
 			{
 				tests=tests.concat(filterbymatch(skeys.slice(i*sitesppage,(i*sitesppage)+sitesppage),search));
 			}
+			return tests;
+	  }
+	  
+	  
+		function list(){ 
+			let html  = "";
+			let html1 = "";
+			let res   = get(search);
+			let news  = get("noticia");
 			
-			let pkeys = tests.slice((page-1)*sitesppage,(page-1)*sitesppage+sitesppage);
+			let all   = res;
+			for(let i=0;i<news.length;i++)
+			{
+				let f = false;
+				for(let j=0;j<res.length;j++)
+				{
+					if(sites[news[i]].title==sites[res[j]].title){
+						f = true
+					}
+				}
+				if(!f){
+					all.push(news[i]);
+				}
+		  }
+			let pkeys = all.slice((page-1)*sitesppage,(page-1)*sitesppage+sitesppage);
+			
 			for(let i=0;i<pkeys.length;i++)
-	  	{
-	  		html += li(sites[pkeys[i]],search);
-	  	}
+			{
+				html += li(sites[pkeys[i]],search);
+			}
+	  	
 	  	document.getElementById("resultado").innerHTML = html;
-	  	document.getElementById("paginacao").innerHTML = pagination(tests.length/sitesppage);
+	  	document.getElementById("paginacao").innerHTML = pagination(all.length/sitesppage);
 		}
 		
 		function pagination(nofpages){
