@@ -13,7 +13,9 @@ var sites = {
 	"congressoemfoco":{title:"congresso em foco", abstract:"noticias do congresso nacional direto de brasilia",url:"congressoemfoco.uol.com.br","search":"",params:[{name:"s",f:"search"}],keywords:["politica","noticia","brasilia","congresso","nacional"]},
 	"apublica":{title:"apublica",url:"apublica.org",abstract:"Agência de Jornalismo Investigativ",params:[{name:"s",f:"search"}],keywords:["noticia","politica"]},
 	".gov.br":{title:".gov.br",url:"gov.br",abstract:"Serviços e Informações do Brasil",search:"search",params:[{name:"SearchableText",f:"search"}],keywords:[]},
-	"eaulas.usp":{title:"eaulas.usp",url:"eaulas.usp.br",abstract:"Portal de video aulas",search:"search.action",params:[],keywords:["educacao","video","curso","faculdade","universidade"]}
+	"eaulas.usp":{title:"eaulas.usp",url:"eaulas.usp.br",abstract:"Portal de video aulas",search:"search.action",params:[],keywords:["educacao","video","curso","faculdade","universidade"]},
+	"nasa":{title:"nasa",url:"nasa.gov",abstract:"America’s civil space program",search:"search",params:[{name:"query",f:"search"},{name:"affiliate",v:"nasa"},{name:"utf8",v:"%E2%9C%93"}],keywords:["tecnologia","space","spaço","terra","lua","video"]},
+  "flickr":{title:"flickr",url:"flickr.com",abstract:"o melhor aplicativo online de gerenciamento e compartilhamento no mundo",search:"search",params:[{name:"text",f:"search"}],keywords:["fotos","photos","imagens","images","imagem","retrato","foto"]}
 };
 		
 
