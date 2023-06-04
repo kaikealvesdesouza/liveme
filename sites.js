@@ -17,7 +17,7 @@ var sites = {
 	"nasa":{title:"nasa",url:"nasa.gov",abstract:"America’s civil space program",search:"search",params:[{name:"query",f:"search"},{name:"affiliate",v:"nasa"},{name:"utf8",v:"%E2%9C%93"}],keywords:["tecnologia","space","spaço","terra","lua","video"]},
   "flickr":{title:"flickr",url:"flickr.com",abstract:"o melhor aplicativo online de gerenciamento e compartilhamento no mundo",search:"search",params:[{name:"text",f:"search"}],keywords:["fotos","photos","imagens","images","imagem","retrato","foto"]},
   "marvelcinematicuniverse":{title:"marvelcinematicuniverse",url:"marvelcinematicuniverse.fandom.com/wiki/",abstract:"The online marvel cinematic universe encyclopedia",search:"Special:Search",params:[{name:"query",f:"search"}],keywords:["marvel","fotos","photos","photo","foto"]},
-	"bibliotecanacional":{title:"bibliotecanacional",url:"bndigital.bn.gov.br/bibliotecas-digitais-pelo-mundo/",search:"",params:[],keywords:["livro","acervo","biblioteca","jornal","book"]}
+	"bibliotecanacional":{title:"bibliotecanacional",url:"bndigital.bn.gov.br/bibliotecas-digitais-pelo-mundo/",abstract:"",search:"",params:[],keywords:["livro","acervo","biblioteca","jornal","book"]}
 	//https://institutocpfl.org.br/?s=eugenio&submit=
 };
 		
