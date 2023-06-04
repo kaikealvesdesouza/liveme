@@ -162,11 +162,13 @@
 	  		let nofsilabas = Math.ceil(sites[items[i]].title.length/3);
 	  		let palavra    = "";
 	  		let found      = false;
-	  		
+	  		let begin      =0;
 	  		for(let p=0;p<nofsilabas;p++)
 	  		{
-	  			let silaba  = sites[items[i]].title.slice(p*nofsilabas,p*nofsilabas + 3);
+	  			let limit   = begin + 3;
+	  			let silaba  = sites[items[i]].title.slice(begin,limit);
 	  				 palavra += silaba;
+	  				 begin = limit;
 	  				 console.log("palavra",palavra);
 					let  regex  = new RegExp(palavra,'g');
 					
