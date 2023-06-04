@@ -208,7 +208,7 @@
 			let html  = "";
 			let html1 = "";
 			let res   = get(search);
-			let news  = [];//get("noticia");
+			let news  = get("noticia");
 			
 			let all   = res;
 			for(let i=0;i<news.length;i++)
@@ -276,6 +276,8 @@
 		if(search){
 			document.getElementById("search").value=search;    
 			list();
+		}else{
+			
 		}
 		  	
 	</script>
