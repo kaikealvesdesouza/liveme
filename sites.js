@@ -18,7 +18,10 @@ var sites = {
   "flickr":{title:"flickr",url:"flickr.com",abstract:"o melhor aplicativo online de gerenciamento e compartilhamento no mundo",search:"search",params:[{name:"text",f:"search"}],keywords:["fotos","photos","imagens","images","imagem","retrato","foto"]},
   "marvelcinematicuniverse":{title:"marvelcinematicuniverse",url:"marvelcinematicuniverse.fandom.com/wiki/",abstract:"The online marvel cinematic universe encyclopedia",search:"Special:Search",params:[{name:"query",f:"search"}],keywords:["marvel","fotos","photos","photo","foto"]},
 	"bibliotecanacional":{title:"bibliotecanacional",url:"bndigital.bn.gov.br/bibliotecas-digitais-pelo-mundo/",abstract:"",search:"",params:[],keywords:["livro","acervo","biblioteca","jornal","book"]}
-	//https://institutocpfl.org.br/?s=eugenio&submit=
+	,"institutocpfl":{title:"institutocpfl",url:"institutocpfl.org.br",abstract:"Plataforma de investimento social privado do Grupo CPFL Energia",search:"search",params:[{name:"q",f:"search"}],keywords:["filosofia","aula","café","philosophy"]}
+	,"soundcloud":{title:"soundcloud",url:"soundcloud.com",abstract:"",search:"search",params:[{name:"q",f:"search"}],keywords:["musica","music","sound"]}
+	,"aliceinwonderland.fandom":{title:"aliceinwonderland.fandom",url:"aliceinwonderland.fandom.com",abstract:"Alice in Wonderland wiki is a collaborative encyclopedia for everything related to Lewis Carroll's books and the Alice in Wonderland movie adaptations, fan art and all things related to Wonderland! Anyone can edit",search:"wiki/Special:Search",params:[{name:"query",f:"search"},{name:"scope",v:"internal"},{name:"navigationSearch",v:"true"}],keywords:["alice","wonderland","mirror","rabbit","white"]}
+	,"doceru":{title:"doceru",url:"doceru.com",abstract:"Tenha acesso a milhões de documentos gratuitos.",search:"show",params:[{name:"q",f:"search"}],keywords:["livro","pdf","documento"]}
 };
 		
 
